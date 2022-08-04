@@ -1,6 +1,6 @@
-import signinSchema from '../schemas/singinSchema.js';
+import signinSchema from '../schemas/signinSchema.js';
 
-async function singinValidateMiddleware (req, res, next) {
+async function signinValidateMiddleware (req, res, next) {
   const user = req.body;
 
   const validateUser = signinSchema.validate(user, { abortEarly: false });
@@ -12,4 +12,4 @@ async function singinValidateMiddleware (req, res, next) {
   next();
 }
 
-export default singinValidateMiddleware;
+export default signinValidateMiddleware;

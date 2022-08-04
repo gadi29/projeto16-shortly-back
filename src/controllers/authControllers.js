@@ -34,18 +34,22 @@ export async function signin (req, res) {
   const { email, password } = res.locals.user;
 
   try {
-    const user = await connection.query(
-      'SELECT id, password FROM users WHERE email = $1',
+    const { rows: user, rowCount } = await connection.query(
+      'SELECT * FROM users WHERE email = $1',
       [email]
     );
 
-    const rightPassword = bcrypt.compareSync(password, user.password);
-
-    if (user.length === 0 || !rightPassword) {
+    if (rowCount === 0) {
       return res.sendStatus(401);
     }
 
-    const token = jwt.sign(user.id, process.env.JWT_SECRET);
+    const rightPassword = bcrypt.compareSync(password, user[0].password);
+
+    if (!rightPassword) {
+      return res.sendStatus(401);
+    }
+
+    const token = jwt.sign({ id: user[0].id }, process.env.JWT_SECRET, { expiresIn: '15 days' });
 
     res.status(200).send(token);
 
