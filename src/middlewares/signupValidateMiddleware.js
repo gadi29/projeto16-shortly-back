@@ -1,6 +1,6 @@
 import newUserSchema from '../schemas/signupSchema.js';
 
-async function signupValidateMiddleware (req, res, next) {
+export async function signupValidateMiddleware (req, res, next) {
   const newUser = req.body;
 
   const validateUser = newUserSchema.validate(newUser, { abortEarly: false });
@@ -11,5 +11,3 @@ async function signupValidateMiddleware (req, res, next) {
   res.locals.user = newUser;
   next();
 }
-
-export default signupValidateMiddleware;
