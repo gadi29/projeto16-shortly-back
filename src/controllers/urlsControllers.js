@@ -6,10 +6,11 @@ export async function generateShortUrl (req, res) {
   const url = res.locals.url;
   const shortUrl = nanoid(8);
 
+  console.log(user)
   try {
     await connection.query(
-      'INSERT INTO urls ("userId", "url", shortUrl") VALUES ($1, $2, $3)',
-      [user.id, url, shortUrl]
+      'INSERT INTO urls ("userId", "url", "shortUrl") VALUES ($1, $2, $3)',
+      [user.id, url.url, shortUrl]
     )
 
     res.status(201).send({ shortUrl: shortUrl });

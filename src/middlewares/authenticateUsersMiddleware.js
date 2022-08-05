@@ -1,26 +1,30 @@
 import connection from '../dbStrategy/pgsql.js';
 import jwt from 'jsonwebtoken';
 
-async function authenticateUser (req, res, next) {
+function authenticateUser (req, res, next) {
 
   const { authorization } = req.headers;
   const token = authorization?.replace('Bearer ', '');
 
-  console.log(process.env.JWT_SECRET);
-  const userId = jwt.verify(token, process.env.JWT_SECRET);
+  jwt.verify(token, process.env.JWT_SECRET, async (err, userId) => {
+    
+    if (err) {
+      return res.sendStatus(401);
+    }
 
-  const user = await connection.query(
-    'SELECT * FROM users WHERE id = $1',
-    [userId.id]
+    const { rows: user, rowCount } = await connection.query(
+      'SELECT * FROM users WHERE id = $1',
+      [userId.id]
+    );
+      
+    if (rowCount === 0) {
+      return res.sendStatus(401);
+    }
+    
+    res.locals.user = user[0];
+    next();
+    }
   );
-  
-  if (!user) {
-    return res.sendStatus(401);
-  }
-
-  res.locals.user = user;
-
-  next();
 }
 
 export default authenticateUser;
