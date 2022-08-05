@@ -65,3 +65,33 @@ export async function redirectToUrl (req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function deleteUrl (req, res) {
+  const { id } = req.params;
+  const user = res.locals.user;
+
+  try {
+    const { rows: url, rowCount } = await connection.query(
+      'SELECT * FROM urls WHERE id = $1',
+      [id]
+    );
+
+    if (rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    if (url[0].userId !== user.id) {
+      return res.sendStatus(401);
+    }
+
+    await connection.query(
+      'DELETE FROM urls WHERE id = $1',
+      [id]
+    );
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+}
