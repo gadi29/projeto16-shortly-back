@@ -29,3 +29,24 @@ export async function getUserHistory (req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function getRanking (req, res) {
+  try {
+    const { rows: ranking } = await connection.query(
+      `SELECT 
+        urls."userId", 
+        users.name, 
+        COUNT(urls."userId") as "linksCount", 
+        SUM(urls."visitCount") as "visitCount"
+      FROM urls JOIN users ON urls."userId" = users.id
+      GROUP BY urls."userId", users.name
+      ORDER BY "visitCount" DESC
+      LIMIT 10`
+    )
+
+    res.status(200).send(ranking);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+}

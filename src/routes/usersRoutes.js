@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import authenticateUser from "../middlewares/authenticateUsersMiddleware.js";
-import { getUserHistory } from "../controllers/usersControllers.js";
+import { getUserHistory, getRanking } from "../controllers/usersControllers.js";
 
 const usersRoutes = Router();
 
