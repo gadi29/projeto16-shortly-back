@@ -1,8 +1,9 @@
 import { Router } from "express";
 
 import urlValidateMiddleware from "../middlewares/urlValidateMiddleware.js";
-import { generateShortUrl } from "../controllers/urlsControllers.js";
 import authenticateUser from "../middlewares/authenticateUsersMiddleware.js";
+import { generateShortUrl } from "../controllers/urlsControllers.js";
+import { getUrlObject } from "../controllers/urlsControllers.js";
 
 const urlsRoutes = Router();
 

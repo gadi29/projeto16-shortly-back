@@ -3,17 +3,36 @@ import { nanoid } from 'nanoid';
 
 export async function generateShortUrl (req, res) {
   const user = res.locals.user;
-  const url = res.locals.url;
+  const { url } = res.locals.url;
   const shortUrl = nanoid(8);
 
-  console.log(user)
   try {
     await connection.query(
       'INSERT INTO urls ("userId", "url", "shortUrl") VALUES ($1, $2, $3)',
-      [user.id, url.url, shortUrl]
-    )
+      [user.id, url, shortUrl]
+    );
 
     res.status(201).send({ shortUrl: shortUrl });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+}
+
+export async function getUrlObject (req, res) {
+  const { id } = req.params;
+
+  try {
+    const { rows: urlObject, rowCount } = await connection.query(
+      'SELECT "id", "shortUrl", "url" FROM urls WHERE id = $1',
+      [id]
+    );
+
+    if(rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.status(200).send(urlObject[0]);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
