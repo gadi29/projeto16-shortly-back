@@ -4,6 +4,7 @@ import urlValidateMiddleware from "../middlewares/urlValidateMiddleware.js";
 import authenticateUser from "../middlewares/authenticateUsersMiddleware.js";
 import { generateShortUrl } from "../controllers/urlsControllers.js";
 import { getUrlObject } from "../controllers/urlsControllers.js";
+import { redirectToUrl } from "../controllers/urlsControllers.js";
 
 const urlsRoutes = Router();
 

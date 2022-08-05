@@ -38,3 +38,30 @@ export async function getUrlObject (req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function redirectToUrl (req, res) {
+  const { shortUrl } = req.params;
+
+  try {
+    const { rows: url, rowCount } = await connection.query(
+      'SELECT "id", "url", "visitCount" FROM urls WHERE "shortUrl" = $1',
+      [shortUrl]
+    );
+
+    if(rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    const addOneInVisitCount = (url[0].visitCount) + 1;
+
+    await connection.query(
+      'UPDATE urls SET "visitCount" = $1 WHERE id = $2',
+      [addOneInVisitCount, url[0].id]
+    )
+
+    res.redirect(url[0].url);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+}
