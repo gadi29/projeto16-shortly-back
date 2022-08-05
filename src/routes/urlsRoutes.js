@@ -11,5 +11,6 @@ const urlsRoutes = Router();
 urlsRoutes.post('/urls/shorten', authenticateUser, urlValidateMiddleware, generateShortUrl);
 urlsRoutes.get('/urls/:id', getUrlObject);
 urlsRoutes.get('/urls/open/:shortUrl', redirectToUrl);
+urlsRoutes.delete('/urls/:id', authenticateUser, deleteUrl);
 
 export default urlsRoutes;
