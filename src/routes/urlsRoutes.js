@@ -7,5 +7,6 @@ import authenticateUser from "../middlewares/authenticateUsersMiddleware.js";
 const urlsRoutes = Router();
 
 urlsRoutes.post('/urls/shorten', authenticateUser, urlValidateMiddleware, generateShortUrl);
+urlsRoutes.get('/urls/:id', getUrlObject);
 
 export default urlsRoutes;
