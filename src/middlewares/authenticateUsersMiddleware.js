@@ -23,6 +23,7 @@ function authenticateUser (req, res, next) {
     }
     
     res.locals.user = user[0];
+    
     next();
     }
   );
