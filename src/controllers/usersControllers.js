@@ -1,4 +1,3 @@
-import connection from '../dbStrategy/pgsql.js';
 import { usersRepository } from '../repositories/usersRepository.js';
 
 export async function getUserHistory (req, res) {
