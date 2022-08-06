@@ -56,11 +56,19 @@ function insertNewUser(name, email, password) {
   );
 }
 
+function getUserById(id) {
+  return connection.query(
+    'SELECT * FROM users WHERE id = $1',
+    [id]
+  );
+}
+
 export const usersRepository = {
   getUserUrls,
   getUserIdName,
   getUserComplete,
   getRankingSQL,
   getUserByEmail,
-  insertNewUser
+  insertNewUser,
+  getUserById
 }
