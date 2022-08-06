@@ -1,16 +1,13 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import connection from '../dbStrategy/pgsql.js';
+import { usersRepository } from '../repositories/usersRepository.js';
 
 export async function signup (req, res) {
   const newUser = res.locals.user;
 
   try {
-    const { rowCount } = await connection.query(
-      'SELECT * FROM users WHERE email = $1',
-      [newUser.email]
-    );
+    const { rowCount } = await usersRepository.getUserByEmail(newUser.email);
 
     if (rowCount > 0) {
       return res.sendStatus(409);
@@ -18,10 +15,7 @@ export async function signup (req, res) {
 
     const passwordHash = bcrypt.hashSync(newUser.password, 10);
 
-    await connection.query(
-      'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',
-      [newUser.name, newUser.email, passwordHash]
-    );
+    await usersRepository.insertNewUser(newUser.name, newUser.email, passwordHash);
 
     res.sendStatus(201);
   } catch (error) {
@@ -34,10 +28,7 @@ export async function signin (req, res) {
   const { email, password } = res.locals.user;
 
   try {
-    const { rows: user, rowCount } = await connection.query(
-      'SELECT * FROM users WHERE email = $1',
-      [email]
-    );
+    const { rows: user, rowCount } = await usersRepository.getUserByEmail(email);
 
     if (rowCount === 0) {
       return res.sendStatus(401);

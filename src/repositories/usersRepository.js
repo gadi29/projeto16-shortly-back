@@ -42,9 +42,25 @@ function getRankingSQL() {
   );
 }
 
+function getUserByEmail(email) {
+  return connection.query(
+    'SELECT * FROM users WHERE email = $1',
+    [email]
+  );
+}
+
+function insertNewUser(name, email, password) {
+  return connection.query(
+    'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',
+    [name, email, password]
+  );
+}
+
 export const usersRepository = {
   getUserUrls,
   getUserIdName,
   getUserComplete,
-  getRankingSQL
+  getRankingSQL,
+  getUserByEmail,
+  insertNewUser
 }
