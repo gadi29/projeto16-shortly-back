@@ -1,5 +1,5 @@
-import connection from '../dbStrategy/pgsql.js';
 import jwt from 'jsonwebtoken';
+import { usersRepository } from '../repositories/usersRepository.js';
 
 function authenticateUser (req, res, next) {
   const { authorization } = req.headers;
@@ -16,10 +16,7 @@ function authenticateUser (req, res, next) {
       return res.sendStatus(401);
     }
 
-    const { rows: user, rowCount } = await connection.query(
-      'SELECT * FROM users WHERE id = $1',
-      [userId.id]
-    );
+    const { rows: user, rowCount } = await usersRepository.getUserById(userId.id)
       
     if (rowCount === 0) {
       return res.sendStatus(404);

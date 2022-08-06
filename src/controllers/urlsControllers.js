@@ -1,4 +1,4 @@
-import connection from '../dbStrategy/pgsql.js';
+import { urlsRepository } from '../repositories/urlsRepository.js';
 import { nanoid } from 'nanoid';
 
 export async function generateShortUrl (req, res) {
@@ -7,10 +7,7 @@ export async function generateShortUrl (req, res) {
   const shortUrl = nanoid(8);
 
   try {
-    await connection.query(
-      'INSERT INTO urls ("userId", "url", "shortUrl") VALUES ($1, $2, $3)',
-      [user.id, url, shortUrl]
-    );
+    await urlsRepository.insertNewUrl(user.id, url, shortUrl);
 
     res.status(201).send({ shortUrl: shortUrl });
   } catch (error) {
@@ -23,10 +20,7 @@ export async function getUrlObject (req, res) {
   const { id } = req.params;
 
   try {
-    const { rows: urlObject, rowCount } = await connection.query(
-      'SELECT "id", "shortUrl", "url" FROM urls WHERE id = $1',
-      [id]
-    );
+    const { rows: urlObject, rowCount } = await urlsRepository.getUrlAndShortUrl(id);
 
     if(rowCount === 0) {
       return res.sendStatus(404);
@@ -43,10 +37,7 @@ export async function redirectToUrl (req, res) {
   const { shortUrl } = req.params;
 
   try {
-    const { rows: url, rowCount } = await connection.query(
-      'SELECT "id", "url", "visitCount" FROM urls WHERE "shortUrl" = $1',
-      [shortUrl]
-    );
+    const { rows: url, rowCount } = await urlsRepository.getUrlWithVisitCount(shortUrl);
 
     if(rowCount === 0) {
       return res.sendStatus(404);
@@ -54,10 +45,7 @@ export async function redirectToUrl (req, res) {
 
     const addOneInVisitCount = (url[0].visitCount) + 1;
 
-    await connection.query(
-      'UPDATE urls SET "visitCount" = $1 WHERE id = $2',
-      [addOneInVisitCount, url[0].id]
-    )
+    await urlsRepository.updateUrlVisitCount(url[0].id, addOneInVisitCount)
 
     res.redirect(url[0].url);
   } catch (error) {
@@ -71,10 +59,7 @@ export async function deleteUrl (req, res) {
   const user = res.locals.user;
 
   try {
-    const { rows: url, rowCount } = await connection.query(
-      'SELECT * FROM urls WHERE id = $1',
-      [id]
-    );
+    const { rows: url, rowCount } = await urlsRepository.getUrl(id);
 
     if (rowCount === 0) {
       return res.sendStatus(404);
@@ -84,10 +69,7 @@ export async function deleteUrl (req, res) {
       return res.sendStatus(401);
     }
 
-    await connection.query(
-      'DELETE FROM urls WHERE id = $1',
-      [id]
-    );
+    await urlsRepository.deleteUrl(id);
 
     res.sendStatus(204);
   } catch (error) {
