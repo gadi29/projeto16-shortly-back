@@ -115,22 +115,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 COPY public.urls (id, "userId", url, "shortUrl", "visitCount", "createdAt") FROM stdin;
 20	11	https://www.tiobe.com/tiobe-index/	8sh4UGbU	4	2022-08-05 18:36:27.050628
-18	15	https://www.tiobe.com/tiobe-index/	Sv3XQ5Dw	2	2022-08-05 18:35:39.187805
-22	8	https://www.tiobe.com/tiobe-index/	umA7iRHi	1	2022-08-05 18:45:10.87332
 19	6	https://www.tiobe.com/tiobe-index/	e7S-PXXJ	1	2022-08-05 18:36:04.957608
 23	8	https://www.tiobe.com/tiobe-index/	yk-XNXGP	0	2022-08-05 18:48:43.79012
-13	10	https://www.familysearch.org/tree/pedigree/landscape/G7Q9-NM2	Zr3AbPcK	2	2022-08-05 18:28:21.945388
 24	15	https://www.tiobe.com/tiobe-index/	N2SGfjMp	0	2022-08-05 18:49:42.763815
-7	4	https://trello.com/b/3XgTxZCQ/driven	pDxfvAK0	0	2022-08-05 16:15:55.628847
 9	5	https://oceanicaquarium.com.br/ingressos/	awv5CNBK	1	2022-08-05 16:16:49.576779
-10	5	https://github.com/gadi29/projeto16-shortly-back	VoIgRpCz	3	2022-08-05 16:16:57.200865
-8	4	https://github.com/gadi29/projeto13-mywallet-back	bkOVh17N	1	2022-08-05 16:16:02.167567
 6	4	https://www.geeksforgeeks.org/express-js-res-redirect-function/	a82m02wb	2	2022-08-05 16:15:49.126531
 5	4	https://calendar.google.com/calendar/u/0/r	vS5pWhXD	2	2022-08-05 16:15:40.254549
 12	14	http://www.geocities.ws/costeira1/neoa/	KQgNsagg	0	2022-08-05 18:26:54.773346
-11	14	http://www.geocities.ws/costeira1/neoa/	PDU2FNKy	2	2022-08-05 18:26:16.1955
 15	16	https://moodle.ufsc.br/my/	chBv_u1l	0	2022-08-05 18:32:45.055188
-14	16	https://www.notion.so/Projeto-Shortly-API-5d320b2c2aac4045a705fb2e8c178121	l4ID6N0I	2	2022-08-05 18:32:23.559822
 16	9	https://webmail.ufsc.br/?_task=mail&_mbox=INBOX	x2O_19Ci	4	2022-08-05 18:33:35.953609
 17	7	https://www.tiobe.com/tiobe-index/	7VbMv8pm	6	2022-08-05 18:34:50.65674
 21	13	https://www.tiobe.com/tiobe-index/	x_HVCD-Q	3	2022-08-05 18:37:32.281834
